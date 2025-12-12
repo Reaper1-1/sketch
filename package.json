@@ -22,24 +22,24 @@
         "postinstall": "npm run build && skpm-link"
     },
     "devDependencies": {
-        "@babel/plugin-syntax-async-generators": "7.8.4",
-        "@babel/plugin-transform-runtime": "7.19.6",
+        "@babel/plugin-syntax-async-generators": "^7.8.4",
+        "@babel/plugin-transform-runtime": "^7.19.6",
+        "@skpm/builder": "^0.9.5",
         "@skpm/extract-loader": "2.0.3",
         "copy-webpack-plugin": "5.1.2",
-        "css-loader": "3.2.1",
+        "css-loader": "^5.0.0",
         "dot-tpl-loader": "1.2.1",
         "file-loader": "1.1.11",
-        "html-loader": "0.5.5",
+        "html-loader": "^1.0.0",
         "regexp-replace-loader": "1.0.1",
         "style-loader": "0.23.1",
-        "webpack-concat-plugin": "3.0.0"
+        "webpack-concat-plugin": "^3.0.0"
     },
     "resources": [
         "src/assets/js/*.js"
     ],
     "dependencies": {
-        "@babel/runtime": "7.20.7",
-        "@skpm/builder": "0.9.5",
+        "@babel/runtime": "^7.20.7",
         "@skpm/child_process": "0.4.2",
         "@skpm/fs": "^0.2.6",
         "mocha-js-delegate": "0.2.0",
