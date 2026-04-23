@@ -1,4 +1,4 @@
-var ConcatPlugin = require('webpack-concat-plugin');
+var ConcatPlugin = require('@mcler/webpack-concat-plugin');
 var CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = function (config) {
@@ -31,8 +31,6 @@ module.exports = function (config) {
 
     config.plugins.push(
         new ConcatPlugin({
-            uglify: false,
-            sourceMap: false,
             name: 'statics',
             outputPath: '../Resources/',
             injectType: 'none',
@@ -48,8 +46,6 @@ module.exports = function (config) {
             ],
         }),
         new ConcatPlugin({
-            uglify: false,
-            sourceMap: false,
             name: 'statics',
             outputPath: '../Resources/css/',
             injectType: 'none',
@@ -65,19 +61,21 @@ module.exports = function (config) {
     );
 
     config.plugins.push(
-        new CopyPlugin([
-            {
-                from: './src/assets/fonts',
-                to: '../Resources/fonts',
-            },
-            {
-                from: './src/assets/images',
-                to: '../Resources/images',
-            },
-            {
-                from: './src/frameworks',
-                to: '../Sketch/frameworks',
-            },
-        ])
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: './src/assets/fonts',
+                    to: '../Resources/fonts',
+                },
+                {
+                    from: './src/assets/images',
+                    to: '../Resources/images',
+                },
+                {
+                    from: './src/frameworks',
+                    to: '../Sketch/frameworks',
+                },
+            ]
+        })
     );
 };
