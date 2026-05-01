@@ -16,23 +16,28 @@ class Asset {
             function (assetSource) {
                 // search assets
                 const cleanedQuery = query === 'q=' ? '' : query; // do not use query if empty
-                let url = '/v1/assets/search/';
+                let url = '/v1/assets/search';
+                const params = [];
                 if (assetSource.implicit_access) {
-                    url += assetSource.connected_document_id + '?' + cleanedQuery;
+                    url += '/' + assetSource.connected_document_id;
                 } else {
-                    url += '?project_id=' + assetSource.id + '&' + cleanedQuery;
+                    params.push('project_id=' + assetSource.id);
                 }
-
-                if (cleanedQuery === '') {
-                    url += `&limit=${MAX_ASSETS_TO_REQUEST_FOR_LIBRARY}`;
+                if (cleanedQuery) {
+                    params.push(cleanedQuery);
+                } else {
+                    params.push(`limit=${MAX_ASSETS_TO_REQUEST_FOR_LIBRARY}`);
+                }
+                if (params.length) {
+                    url += '?' + params.join('&');
                 }
 
                 return fetch(url).then(
                     function (data) {
                         return data;
-                    }.bind(this)
+                    }.bind(this),
                 );
-            }.bind(this)
+            }.bind(this),
         );
     }
 
@@ -43,11 +48,11 @@ class Asset {
                     if (isWebviewPresent('frontifymain')) {
                         sendToWebview(
                             'frontifymain',
-                            'showLibraryAssets(' + JSON.stringify({ type: type, assets: data.data }) + ')'
+                            'showLibraryAssets(' + JSON.stringify({ type: type, assets: data.data }) + ')',
                         );
                     }
                 }
-            }.bind(this)
+            }.bind(this),
         );
     }
 
@@ -90,7 +95,7 @@ class Asset {
                                     },
                                 ];
                             }
-                        }.bind(this)
+                        }.bind(this),
                     );
 
                     if (!applied) {
@@ -102,7 +107,7 @@ class Asset {
                                 if (layer.type == 'Artboard') {
                                     parent = layer;
                                 }
-                            }.bind(this)
+                            }.bind(this),
                         );
 
                         if (parent) {
@@ -143,7 +148,7 @@ class Asset {
                                     if (!parent && selectedLayer.type == 'Artboard') {
                                         parent = selectedLayer;
                                     }
-                                }.bind(this)
+                                }.bind(this),
                             );
 
                             if (!parent) {
@@ -155,12 +160,12 @@ class Asset {
                             jsLayer.selected = true;
                             jsdoc.centerOnLayer(jsLayer);
                             jsdoc.sketchObject.eventHandlerManager().currentHandler().zoomToSelection();
-                        }.bind(this)
+                        }.bind(this),
                     )
                     .catch(
                         function (e) {
                             console.error(e);
-                        }.bind(this)
+                        }.bind(this),
                     );
             }
         }
