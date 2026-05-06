@@ -42,7 +42,11 @@
         "sketch-module-web-view": "^3.5.3"
     },
     "overrides": {
-        "loader-utils": "1.4.2",
-        "json5": "2.2.3"
+        "@mcler/webpack-concat-plugin": {
+            "globby": "^11.1.0"
+        },
+        "dot-tpl-loader": {
+            "loader-utils": "1.4.2"
+        }
     }
 }
