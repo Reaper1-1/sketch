@@ -7,11 +7,13 @@ export function runCommand(context) {
     let threadDictionary = NSThread.mainThread().threadDictionary();
 
     executeSafely(context, function () {
-        if(!threadDictionary['frontifywindow']) {
+        let existing = threadDictionary['frontifywindow'];
+        if (!existing) {
             threadDictionary['frontifywindow'] = main(context, 'artboards');
-        }
-        else {
-            threadDictionary['frontifywindow'].close();
+        } else if (existing.isVisible()) {
+            existing.hide();
+        } else {
+            existing.show();
         }
     });
 }
