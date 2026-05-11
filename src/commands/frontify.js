@@ -7,11 +7,17 @@ export function runCommand(context) {
     let threadDictionary = NSThread.mainThread().threadDictionary();
 
     executeSafely(context, function () {
-        if(!threadDictionary['frontifywindow']) {
-            threadDictionary['frontifywindow'] = main(context, 'artboards');
-        }
-        else {
-            threadDictionary['frontifywindow'].close();
+        // sketch-module-web-view caches the NSPanel under the BrowserWindow's
+        // identifier. Read the panel directly: storing the JS BrowserWindow
+        // wrapper across menu invocations crashes inside Mocha_getProperty
+        // because each invocation runs in its own COScript / JSContext.
+        let panel = threadDictionary['frontifymain'];
+        if (!panel) {
+            main(context, 'artboards');
+        } else if (panel.isVisible()) {
+            panel.orderOut(null);
+        } else {
+            panel.makeKeyAndOrderFront(null);
         }
     });
 }

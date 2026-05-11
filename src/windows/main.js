@@ -98,7 +98,10 @@ export default function (context, view) {
     win.on(
         'close',
         function () {
-            threadDictionary.removeObjectForKey('frontifywindow');
+            // Closing not always working, prob related to
+            // https://github.com/skpm/sketch-module-web-view/issues/119 and
+            // https://github.com/skpm/sketch-module-web-view/issues/136
+            win.hide();
         }.bind(this),
     );
 
