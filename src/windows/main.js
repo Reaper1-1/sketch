@@ -47,7 +47,7 @@ export default function (context, view) {
         'ready-to-show',
         function () {
             win.show();
-        }.bind(this)
+        }.bind(this),
     );
 
     webview.on('cancelOauthFlow', () => {
@@ -66,9 +66,9 @@ export default function (context, view) {
                 domain: domain,
             }).then(
                 function () {
-                    win.close();
-                    runCommand(context);
-                }.bind(this)
+                    sketch.resize(win);
+                    webview.loadURL(sketch.getViewData().url);
+                }.bind(this),
             );
         });
     });
@@ -85,30 +85,30 @@ export default function (context, view) {
                     webview.executeJavaScript('switchTab("' + view + '")');
                 }, 200);
             }
-        }.bind(this)
+        }.bind(this),
     );
 
     webview.on(
         'did-fail-load',
         function (err) {
             console.log('did-fail-load', err);
-        }.bind(this)
+        }.bind(this),
     );
 
     win.on(
         'close',
         function () {
             threadDictionary.removeObjectForKey('frontifywindow');
-        }.bind(this)
+        }.bind(this),
     );
 
     // Handlers called from webview
     webview.on('logout', function () {
         user.logout().then(
             function () {
-                win.close();
-                runCommand(context);
-            }.bind(this)
+                sketch.resize(win);
+                webview.loadURL(sketch.getViewData().url);
+            }.bind(this),
         );
     });
 
@@ -135,7 +135,7 @@ export default function (context, view) {
         artboard.uploadArtboards(data).then(
             function () {
                 webview.executeJavaScript('artboardsUploaded()');
-            }.bind(this)
+            }.bind(this),
         );
     });
 
@@ -146,18 +146,18 @@ export default function (context, view) {
                     let selected = data.sources.find(
                         function (source) {
                             return source.id == assetSourceId;
-                        }.bind(this)
+                        }.bind(this),
                     );
 
                     if (selected) {
                         target.switchAssetSourceForType(type, selected).then(
                             function () {
                                 webview.executeJavaScript('refresh()');
-                            }.bind(this)
+                            }.bind(this),
                         );
                     }
                 }
-            }.bind(this)
+            }.bind(this),
         );
     });
 
@@ -168,7 +168,7 @@ export default function (context, view) {
             target.getDomain().then(
                 function (data) {
                     NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(data + url));
-                }.bind(this)
+                }.bind(this),
             );
         }
     });
@@ -179,7 +179,7 @@ export default function (context, view) {
                 if (createFolder(data.path)) {
                     NSWorkspace.sharedWorkspace().openFile(data.path);
                 }
-            }.bind(this)
+            }.bind(this),
         );
     });
 
@@ -192,7 +192,7 @@ export default function (context, view) {
             function () {
                 target.showTarget();
                 webview.executeJavaScript('refresh()');
-            }.bind(this)
+            }.bind(this),
         );
     });
 
@@ -205,13 +205,13 @@ export default function (context, view) {
             target.updateTarget({ set: set }).then(
                 function () {
                     artboard.showArtboards();
-                }.bind(this)
+                }.bind(this),
             );
         } else if (view == 'sources') {
             target.updateTarget({ set_sources: set }).then(
                 function () {
                     source.showSources();
-                }.bind(this)
+                }.bind(this),
             );
         }
     });
@@ -220,7 +220,7 @@ export default function (context, view) {
         project.addFolder(name, set).then(
             function () {
                 project.showFolderChooser(set, view);
-            }.bind(this)
+            }.bind(this),
         );
     });
 
@@ -315,7 +315,7 @@ export default function (context, view) {
                     webview.executeJavaScript('showLibrarySearch("' + type + '")');
                     asset.search(type, '');
                 }
-            }.bind(this)
+            }.bind(this),
         );
     });
 

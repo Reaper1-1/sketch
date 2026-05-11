@@ -4,16 +4,15 @@ class Sketch {
     constructor() {}
 
     getViewData() {
-        let data = {};
+        let data = {
+            width: 480,
+            height: 600,
+        };
 
         if (user.isAuthenticated()) {
             data.url = require('../assets/views/main.html');
-            data.width = 480;
-            data.height = 600;
         } else {
             data.url = require('../assets/views/login.html');
-            data.width = 360;
-            data.height = 530;
         }
 
         return data;
